@@ -1,0 +1,52 @@
+# Credentials and sensitive keys (NEVER commit these!)
+credentials.json
+service_account*.json
+*.pem
+*.key
+token.json
+client_secret*.json
+
+# Environment configuration
+.env
+.env.local
+.env.*.local
+
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution and packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Operating System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Logs and runtime data
+*.log
+
