@@ -34,13 +34,43 @@ A webhook system that captures incoming UPI payment notifications from an Androi
 
 ---
 
-## 📊 Google Sheets Columns (7 Columns)
+## 📊 Google Sheets Architecture & Real-Time Dashboard
 
-In your Google Sheet (e.g. named `upi_payment_tracker`), create the following headers in Row 1:
+The spreadsheet is divided into two sections: an **Automated Inbound Log** (Columns A–G) and a **Live Monitor Dashboard** (Columns I–L). Column H acts as a spacer.
+
+### 1. Inbound Transaction Log (Columns A to G)
+
+In your Google Sheet (e.g., `upi_payment_tracker`), Row 1 contains the following headers:
 
 | Col A | Col B | Col C | Col D | Col E | Col F | Col G |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Timestamp** | **Mode** | **App** | **Type** | **Amount** | **Counterparty** | **Raw Notification** |
+| **Timestamp** | **Mode** | **App Name** | **Type** | **Amount** | **Counterparty** | **Raw Notification** |
+
+- **Formatting Highlights:**
+  - `Mode`: Green badge for `LIVE (UPI)`, subtle tag for `TEST (WhatsApp)`.
+  - `Type`: Highlighted badges for `CREDIT` vs `WHATSAPP_TEST` / `DEBIT`.
+  - `Amount`: Formatted as Indian Rupee currency (`₹ #,##0.00`).
+
+---
+
+### 2. ⚡ Real-Time Monitor Dashboard (Columns I to L)
+
+Built directly alongside the transaction stream without blocking Python's `append_row()`:
+
+* **Top KPI Scorecards (Rows 2–4):**
+  - **TOTAL EVENTS**: Total inbound logs (`=COUNTA(A2:A)`)
+  - **LIVE UPI**: Count of successful payments (`=COUNTIF(B2:B, "LIVE (UPI)")`)
+  - **TEST / PINGS**: Count of test messages (`=COUNTIF(B2:B, "TEST (WhatsApp)")`)
+  - **TOTAL CREDITED**: Total INR volume settled (`=SUMIF(D2:D, "CREDIT", E2:E)`)
+
+* **Breakdown Tables (Rows 6–10):**
+  - **Breakdown by Mode**: Aggregates event volume by `LIVE (UPI)` vs `TEST (WhatsApp)`.
+  - **Integration by App**: Splits volume across apps (`GPay`, `WhatsApp`, etc.).
+
+* **Recent Live Credits Stream (Rows 12–16):**
+  - Filtered stream showing the latest live credits (*Timestamp*, *App*, *Amount*, *Counterparty*) using open-ended formulas.
+
+> 💡 **Design Note:** Placing the analytics dashboard in Columns I–L ensures open-ended formulas update instantly while Python continues appending incoming transactions in Columns A–G seamlessly.
 
 ---
 
