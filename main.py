@@ -74,7 +74,7 @@ def webhook():
         return jsonify({"status": "ignored"}), 200
 
     if sheet:
-        sheet.append_row(row, value_input_option='USER_ENTERED')
+        sheet.append_row(row, table_range='A:G', value_input_option='USER_ENTERED')
         return jsonify({"status": "success", "logged_row": row}), 200
 
     return jsonify({"status": "error", "message": "Google Sheet not connected"}), 500
